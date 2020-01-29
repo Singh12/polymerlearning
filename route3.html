@@ -1,0 +1,16 @@
+<dom-module id="route-3">
+    <template>
+       <h2>I am in route 3</h2> 
+    </template>
+    <script>
+        class Route3 extends Polymer.Element {
+            static get is() {
+                return "route-3"
+            }
+            constructor() {
+                super()
+            }
+        }
+        customElements.define(Route3.is, Route3);
+    </script>
+</dom-module>

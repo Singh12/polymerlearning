@@ -1,0 +1,52 @@
+
+<dom-module id="route-app">
+    <template>
+        <h2>I am in route-app </h2>
+        <ul>
+            <li>
+                <a href="/route1">route</a>
+            </li>
+            <li> 
+              <a href="/route2">route2</a> 
+          </li>
+            <li> 
+              <a href="/route3">route3</a> 
+          </li>
+        </ul>
+        <!-- app-location binds to the app's URL -->
+      
+        <!-- iron-pages selects the view based on the active route -->
+        <iron-pages selected="0" id="myPage">
+           <div>d</div>
+           <div>dq</div>
+           <div>dsd</div>
+        </iron-pages>
+      
+        <button on-click="chagePage">Change page</button>
+    </template>
+    <script>
+        class RouteApp extends Polymer.Element {
+            static get is() {
+                return "route-app"
+            }
+            static get properties() {
+                return {
+                    route: {
+                        prefix: '',
+                        path: '/users/bob/messages'
+                    }
+                }
+            }
+
+            constructor() {
+                super()
+            }
+            chagePage() {
+                console.log('I am idh')
+                this.$.myPage.selectNext();
+                console.log(this.$.myPage);
+            }
+        }
+        customElements.define(RouteApp.is, RouteApp);
+    </script>
+</dom-module>
