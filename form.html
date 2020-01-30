@@ -1,20 +1,49 @@
 <dom-module id="form-module">
     <template>
-        Form Example by {{dataBind}} [[propertyBind]]
-
-        <iron-form id="form1">
+      
+        <style is="custom-style">
+            .align_center{
+                text-align: center;
+                font-weight: 800;
+            }
+            paper-dropdown-menu.custom {
+                width: 100%;
+                --paper-input-container-label: {
+                    color: var(--paper-black-500);
+                    font-style: italic;
+                    font-weight: bold;
+                };
+            }
+            paper-checkbox {
+                width: 30%;
+                float: left;
+                margin-top: 20px;
+                margin-bottom: 30px;
+                margin-right:10px ;
+            }
+           #player_form {
+               width: 40%;
+               margin: 0 auto;
+           }
+        </style>
+         <p class="align_center"> Form Example by {{dataBind}} [[propertyBind]]</p>
+        <iron-form id="player_form">
             <form>
-                <paper-input type="text" name="name" required label="Name" value="Rajnish"></paper-input>
-                <input name="custom" required>
-                <input type="checkbox" name="cricket" checked>I like Cricket<br>
-                <paper-checkbox name="sports" value="cricket" checked>Cricket</paper-checkbox>
+                <paper-input type="text" name="name" required label="Name" value=""></paper-input>
+                <paper-input type="text" name="lastName" required label="Last Name" value="" required></paper-input>
                 <br>
-                <paper-dropdown-menu label="Players" name="players" required>
+                <paper-dropdown-menu label="Players" class="custom" name="player" required>
                     <paper-listbox class="dropdown-content" slot="dropdown-content">
-                        <paper-item value="sachin">Sachin</paper-item>
-                        <paper-item value="dhoni">Dhoni</paper-item>
+                        <template is="dom-repeat" items="{{players}}">
+                            <paper-item value="{{item.name}}">{{item.name}}</paper-item>
+                        </template>
                     </paper-listbox>
                 </paper-dropdown-menu>
+                <paper-checkbox name="sports" value="T20" checked>T20</paper-checkbox>
+                <paper-checkbox name="sports" value="One Day">One day</paper-checkbox>
+                <paper-checkbox name="sports" value="Test">Test</paper-checkbox>
+                
+
                 <br><br>
                 <paper-button raised on-click="submit">Submit</paper-button>
                 <paper-button raised on-click="reset">Reset</paper-button>
@@ -23,6 +52,9 @@
             <div class="output"></div>
         </iron-form>
         <!--Iron form end here-->
+      
+            {{object_value.rajnish}}
+       
 
         <!--Iron form end here-->
     </template>
@@ -40,32 +72,39 @@
                     },
                     propertyBind: {
                         type: String,
-                        value: 'Rajnish'
+                        value: ''
+                    },
+                    object_value: {
+                        type: Object,
+                        value: {}
                     }
                 }
             }
-            connectedCallback() {
-                super.connectedCallback();
-                const form = this.$.form1;
-               
-                form.addEventListener('iron-form-submit', function(event) {
-                    console.log(event);
-                this.querySelector('.output').innerHTML = JSON.stringify(event.detail);
-            });
-            }
-
+           
             submit() {
+                const form = this.$.player_form;
+
+                form.addEventListener('iron-form-submit', function (event) {
+                    console.log(event);
+                    this.querySelector('.output').innerHTML = JSON.stringify(event.detail);
+                });
                 console.log('I am here')
-                this.$.form1.submit();
+                this.$.player_form.submit();
+
             }
             reset() {
                 console.log('I am here')
-                this.$.form1.reset();
-                this.$.form1.querySelector('.output').innerHTML = '';
+                this.$.player_form.reset();
+                this.$.player_form.querySelector('.output').innerHTML = '';
             }
             constructor() {
                 super()
-
+                this.players = [
+                    { name: 'Sachin Tendulkar' },
+                    { name: 'Virat Kohli' },
+                    { name: 'Zahir Khan' },
+                    { name: 'Yuvi Singh' }
+                ];
                 console.log('constructor');
             }
             ready() {
@@ -73,8 +112,10 @@
 
                 console.log('I am in ready state');
             }
+            connectedCallback() {
+                super.connectedCallback();
 
-
+            }
         }
 
         customElements.define(FormModule.is, FormModule);
